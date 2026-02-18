@@ -1,0 +1,9 @@
+{
+  "appId": "com.affinity.stockmanager",
+  "appName": "Bregan MainsFlow Stock",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#00000000"
+  }
+}
