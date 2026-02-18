@@ -3,6 +3,8 @@ import StockManagerApp from './components/StockManagerApp';
 import Auth from './components/Auth';
 import { supabase } from './lib/supabaseClient';
 import { BrandIcon } from './components/Icons';
+import { App as CapacitorApp } from '@capacitor/app';
+import { LiveUpdateManager } from '@ionic/appflow-live-updates';
 
 const App = () => {
     const [session, setSession] = useState(null);
@@ -75,6 +77,41 @@ const App = () => {
             authListener?.subscription?.unsubscribe();
         };
     }, [fetchUserProfile]);
+    
+    // This effect handles checking for and applying Over-the-Air updates via Ionic Appflow.
+    useEffect(() => {
+        const performAppflowSync = async () => {
+            try {
+                // This single command checks for updates, downloads them in the background,
+                // and prepares them for the next time the app opens, based on the config.
+                const result = await LiveUpdateManager.sync();
+
+                if (result.isUpdateAvailable) {
+                    console.log('Appflow: New version available and is being downloaded in the background.');
+                } else {
+                    console.log('Appflow: You are on the latest version.');
+                }
+
+            } catch (error) {
+                console.error('Appflow sync error:', error);
+            }
+        };
+
+        // We listen for the app becoming active (resuming from background) to check for updates.
+        const listener = CapacitorApp.addListener('appStateChange', (state) => {
+            if (state.isActive) {
+                performAppflowSync();
+            }
+        });
+        
+        // Also run the check once on initial app load.
+        performAppflowSync();
+
+        return () => {
+            listener.remove();
+        };
+
+    }, []);
 
     if (profileError) {
         return (

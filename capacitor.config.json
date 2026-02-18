@@ -5,5 +5,13 @@
   "bundledWebRuntime": false,
   "android": {
     "backgroundColor": "#00000000"
+  },
+  "plugins": {
+    "LiveUpdates": {
+      "appId": "YOUR_APPFLOW_APP_ID",
+      "channel": "Production",
+      "autoUpdateMethod": "background",
+      "enabled": true
+    }
   }
 }
