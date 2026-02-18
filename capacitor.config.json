@@ -8,7 +8,7 @@
   },
   "plugins": {
     "LiveUpdates": {
-      "appId": "YOUR_APPFLOW_APP_ID",
+      "appId": "28b44127",
       "channel": "Production",
       "autoUpdateMethod": "background",
       "enabled": true
